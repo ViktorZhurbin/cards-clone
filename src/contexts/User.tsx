@@ -13,8 +13,8 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
-        const { email } = user;
-        setUser({ email });
+        const { email, uid } = user;
+        setUser({ email, uid });
       }
     });
   }, []);
