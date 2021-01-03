@@ -1,10 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { firestore } from '@/utils/db/initFirestore';
+import admin from '@/firebase/nodeApp';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { uid, name } = JSON.parse(req.body);
 
-  const deckRef = firestore.doc(`users/${uid}/decks/${name}`);
+  const deckRef = admin.firestore().doc(`users/${uid}/decks/${name}`);
 
   try {
     await deckRef.set({ name });

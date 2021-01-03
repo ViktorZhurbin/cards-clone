@@ -12,4 +12,4 @@ if (!admin.apps.length) {
   });
 }
 
-export const firestore = admin.firestore();
+export default admin;

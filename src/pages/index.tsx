@@ -1,10 +1,9 @@
-import { UserContext } from '@/contexts/User';
+import { useUser } from '@/context/User';
 import Head from 'next/head';
-import { useContext } from 'react';
 import styles from '../styles/Home.module.css';
 
 export default function Home() {
-  const user = useContext(UserContext);
+  const { user, loadingUser } = useUser();
 
   return (
     <div className={styles.container}>
@@ -14,7 +13,7 @@ export default function Home() {
       <main>
         <button
           onClick={() => {
-            if (user) {
+            if (!loadingUser) {
               fetch('/api/deck/add', {
                 method: 'POST',
                 body: JSON.stringify({ uid: user.uid, name: 'ddeck2' }),
@@ -26,7 +25,7 @@ export default function Home() {
         </button>
         <button
           onClick={() => {
-            if (user) {
+            if (!loadingUser) {
               fetch('/api/deck/' + user.uid);
             }
           }}

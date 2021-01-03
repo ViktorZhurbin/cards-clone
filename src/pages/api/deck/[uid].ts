@@ -1,11 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { firestore } from '@/utils/db/initFirestore';
+import admin from '@/firebase/nodeApp';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { uid } = req.query;
   const userId = Array.isArray(uid) ? uid[0] : uid;
 
-  const decksRef = firestore
+  const decksRef = admin
+    .firestore()
     .collection('users')
     .doc(userId)
     .collection('decks');
