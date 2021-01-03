@@ -1,22 +1,20 @@
-import { NextApiRequest } from 'next';
-import firebase from '@/db/firebase';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { firestore } from '@/utils/db/initFirestore';
 
-export default async (req: NextApiRequest) => {
-  const { uid, id } = req.query;
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+  const { uid } = req.query;
   const userId = Array.isArray(uid) ? uid[0] : uid;
-  const deckId = Array.isArray(id) ? id[0] : id;
 
-  const deckRef = firebase
+  const decksRef = firestore
     .collection('users')
     .doc(userId)
-    .collection('decks')
-    .doc(deckId);
+    .collection('decks');
 
-  const deck = await deckRef.get();
-
-  if (!deck.exists) {
-    return null;
+  try {
+    const deckDocs = await decksRef.get();
+    const decks = deckDocs.docs.map((doc) => doc.data());
+    res.status(200).json({ decks });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
-
-  return deck.data();
 };

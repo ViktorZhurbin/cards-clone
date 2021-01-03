@@ -17,12 +17,21 @@ export default function Home() {
             if (user) {
               fetch('/api/deck/add', {
                 method: 'POST',
-                body: JSON.stringify({ uid: user.uid, name: 'ddeck1' }),
+                body: JSON.stringify({ uid: user.uid, name: 'ddeck2' }),
               });
             }
           }}
         >
           Add
+        </button>
+        <button
+          onClick={() => {
+            if (user) {
+              fetch('/api/deck/' + user.uid);
+            }
+          }}
+        >
+          Get
         </button>
       </main>
     </div>
