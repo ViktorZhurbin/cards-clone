@@ -1,22 +1,23 @@
-import { createContext, useEffect, useState } from 'react';
-
-import firebase from '@/firebase/clientApp';
+import { fetcher } from '@/utils/api/fetcher';
+import { createContext, useContext } from 'react';
+import { useQuery } from 'react-query';
+import { useUser } from './User';
 
 export const DecksContext = createContext(undefined);
 
-export const DecksProvider = ({ children }) => {
-  const [decks, setDecks] = useState(null);
+export const useDecks = () => useContext(DecksContext);
 
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged(function (decks) {
-      if (decks) {
-        const { email, uid } = decks;
-        setDecks({ email, uid });
-      }
-    });
-  }, []);
+export const DecksProvider = ({ children }) => {
+  const { user, loadingUser } = useUser();
+  const { isLoading, isError, data, error } = useQuery(
+    ['decks', user?.uid],
+    () => fetcher('/api/decks/' + user.uid),
+    { enabled: !loadingUser }
+  );
 
   return (
-    <DecksContext.Provider value={decks}>{children}</DecksContext.Provider>
+    <DecksContext.Provider value={{ isLoading, isError, data, error }}>
+      {children}
+    </DecksContext.Provider>
   );
 };
