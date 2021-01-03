@@ -1,0 +1,18 @@
+.deckItem {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-gap: 15px;
+  align-items: baseline;
+}
+
+.name {
+  font-size: 1.25rem;
+  color: blue;
+}
+
+.actions {
+  font-size: 0.9rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 5px;
+}

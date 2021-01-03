@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useDecks } from '@/context/Decks';
 import { useUser } from '@/context/User';
 import styles from '../styles/Home.module.css';
+import { DeckItem } from '@/components/DeckItem';
 
 export default function Home() {
   const { user, loadingUser } = useUser();
@@ -29,10 +30,10 @@ export default function Home() {
       <Head>
         <title>Anki Clone</title>
       </Head>
-      <main>
-        <section>
+      <main className={styles.main}>
+        <section className={styles.decks}>
           {decks.map(({ id, name }) => (
-            <div key={id}>{name}</div>
+            <DeckItem key={id} name={name} />
           ))}
         </section>
         <button
