@@ -43,13 +43,14 @@ export default function Home() {
           ))}
         </section>
         <button
+          className={styles.addDeckBtn}
           onClick={() =>
             addDeck.mutate({
               name: `Deck-${Math.floor(Math.random() * 100)}`,
             })
           }
         >
-          Add
+          Add Deck
         </button>
       </main>
     </div>

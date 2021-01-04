@@ -18,3 +18,8 @@
 .decks {
   width: 100%;
 }
+
+.addDeckBtn {
+  align-self: flex-end;
+  margin-top: 15px;
+}
