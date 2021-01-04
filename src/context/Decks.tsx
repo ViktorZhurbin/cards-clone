@@ -8,12 +8,12 @@ export const DecksContext = createContext(undefined);
 export const useDecks = () => useContext(DecksContext);
 
 export const DecksProvider = ({ children }) => {
+  const DECKS_QUERY_KEY = 'decks';
   const user = useUser();
-  const basePath = '/api/decks';
-  const path = user?.uid && `${basePath}?uid=${user.uid}`;
+  const path = user?.uid && `/api/decks?uid=${user.uid}`;
 
   const { isLoading, isError, data, error } = useQuery(
-    'decks',
+    DECKS_QUERY_KEY,
     () => fetcher(path),
     { enabled: !user.isLoading }
   );
@@ -21,9 +21,12 @@ export const DecksProvider = ({ children }) => {
   const queryClient = useQueryClient();
 
   const removeDeck = useMutation(
-    (id) => fetcher(`${path}&deckId=${id}`, { method: 'DELETE' }),
+    (id) =>
+      fetcher(`${path}&deckId=${id}`, {
+        method: 'DELETE',
+      }),
     {
-      onSuccess: (data) => queryClient.setQueryData('decks', data),
+      onSuccess: (data) => queryClient.setQueryData(DECKS_QUERY_KEY, data),
     }
   );
   const addDeck = useMutation(
@@ -32,7 +35,7 @@ export const DecksProvider = ({ children }) => {
         method: 'POST',
       }),
     {
-      onSuccess: (data) => queryClient.setQueryData('decks', data),
+      onSuccess: (data) => queryClient.setQueryData(DECKS_QUERY_KEY, data),
     }
   );
 
