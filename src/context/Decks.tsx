@@ -9,7 +9,8 @@ export const useDecks = () => useContext(DecksContext);
 
 export const DecksProvider = ({ children }) => {
   const user = useUser();
-  const path = user?.uid && `/api/decks?uid=${user.uid}`;
+  const basePath = '/api/decks';
+  const path = user?.uid && `${basePath}?uid=${user.uid}`;
 
   const { isLoading, isError, data, error } = useQuery(
     'decks',
@@ -19,8 +20,17 @@ export const DecksProvider = ({ children }) => {
 
   const queryClient = useQueryClient();
 
-  const { mutate: deleteDeck } = useMutation(
+  const removeDeck = useMutation(
     (id) => fetcher(`${path}&deckId=${id}`, { method: 'DELETE' }),
+    {
+      onSuccess: (data) => queryClient.setQueryData('decks', data),
+    }
+  );
+  const addDeck = useMutation(
+    (name) =>
+      fetcher(`${path}&name=${name}`, {
+        method: 'POST',
+      }),
     {
       onSuccess: (data) => queryClient.setQueryData('decks', data),
     }
@@ -28,7 +38,11 @@ export const DecksProvider = ({ children }) => {
 
   return (
     <DecksContext.Provider
-      value={{ isLoading, isError, data, error, deleteDeck }}
+      value={{
+        getDecks: { isLoading, isError, data, error },
+        addDeck,
+        removeDeck,
+      }}
     >
       {children}
     </DecksContext.Provider>

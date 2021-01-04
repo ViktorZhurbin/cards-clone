@@ -7,7 +7,7 @@ import { DeckItem } from '@/components/DeckItem';
 
 export default function Home() {
   const user = useUser();
-  const decks = useDecks();
+  const { getDecks, addDeck, removeDeck } = useDecks();
 
   if (!user.uid && !user.isLoading) {
     return (
@@ -17,12 +17,12 @@ export default function Home() {
     );
   }
 
-  if (user.isLoading || decks.isLoading) {
+  if (user.isLoading || getDecks.isLoading) {
     return <span>Loading...</span>;
   }
 
-  if (decks.isError) {
-    return <span>Error: {decks.error.message}</span>;
+  if (getDecks.isError) {
+    return <span>Error: {getDecks.error.message}</span>;
   }
 
   return (
@@ -32,21 +32,18 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <section className={styles.decks}>
-          {decks.data.map(({ id, name }) => (
+          {getDecks.data.map(({ id, name }) => (
             <DeckItem
               key={id}
               name={name}
-              onDelete={() => decks.deleteDeck(id)}
+              onDelete={() => removeDeck.mutate(id)}
             />
           ))}
         </section>
         <button
-          onClick={() => {
-            fetch('/api/decks/add', {
-              method: 'POST',
-              body: JSON.stringify({ uid: user.uid, name: 'deck2' }),
-            });
-          }}
+          onClick={() =>
+            addDeck.mutate(`Deck-${Math.floor(Math.random() * 100)}`)
+          }
         >
           Add
         </button>
