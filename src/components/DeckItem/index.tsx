@@ -1,12 +1,13 @@
+import { useMutation, useQuery } from 'react-query';
 import styles from './DeckItem.module.css';
 
-export const DeckItem = ({ name }) => {
+export const DeckItem = ({ name, onDelete }) => {
   return (
     <div className={styles.deckItem}>
       <span className={styles.name}>{name}</span>
       <div className={styles.actions}>
-        <span>Rename</span>
-        <span>Delete</span>
+        <span onClick={() => null}>Rename</span>
+        <span onClick={onDelete}>Delete</span>
       </div>
     </div>
   );

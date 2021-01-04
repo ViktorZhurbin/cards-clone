@@ -6,10 +6,10 @@ import styles from '../styles/Home.module.css';
 import { DeckItem } from '@/components/DeckItem';
 
 export default function Home() {
-  const { user, loadingUser } = useUser();
-  const { data: decks, isLoading: loadingDecks, isError, error } = useDecks();
+  const user = useUser();
+  const decks = useDecks();
 
-  if (!user && !loadingUser) {
+  if (!user.uid && !user.isLoading) {
     return (
       <Link href="/auth">
         <a>Sign in</a>
@@ -17,12 +17,12 @@ export default function Home() {
     );
   }
 
-  if (loadingUser || loadingDecks) {
+  if (user.isLoading || decks.isLoading) {
     return <span>Loading...</span>;
   }
 
-  if (isError) {
-    return <span>Error: {error.message}</span>;
+  if (decks.isError) {
+    return <span>Error: {decks.error.message}</span>;
   }
 
   return (
@@ -32,15 +32,19 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <section className={styles.decks}>
-          {decks.map(({ id, name }) => (
-            <DeckItem key={id} name={name} />
+          {decks.data.map(({ id, name }) => (
+            <DeckItem
+              key={id}
+              name={name}
+              onDelete={() => decks.deleteDeck(id)}
+            />
           ))}
         </section>
         <button
           onClick={() => {
-            fetch('/api/deck/add', {
+            fetch('/api/decks/add', {
               method: 'POST',
-              body: JSON.stringify({ uid: user.uid, name: 'ddeck2' }),
+              body: JSON.stringify({ uid: user.uid, name: 'deck2' }),
             });
           }}
         >

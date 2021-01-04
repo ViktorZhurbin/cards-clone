@@ -8,7 +8,7 @@ export const useUser = () => useContext(UserContext);
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loadingUser, setLoadingUser] = useState(true);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     const unsubscriber = firebase.auth().onAuthStateChanged(async (user) => {
@@ -25,7 +25,7 @@ export const UserProvider = ({ children }) => {
       } catch (error) {
         // Most probably a connection error. Handle appropriately.
       } finally {
-        setLoadingUser(false);
+        setLoading(false);
       }
     });
 
@@ -34,7 +34,7 @@ export const UserProvider = ({ children }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, loadingUser }}>
+    <UserContext.Provider value={{ ...user, isLoading }}>
       {children}
     </UserContext.Provider>
   );

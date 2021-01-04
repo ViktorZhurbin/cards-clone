@@ -11,6 +11,7 @@
 }
 
 .actions {
+  cursor: pointer;
   font-size: 0.9rem;
   display: grid;
   grid-template-columns: 1fr 1fr;

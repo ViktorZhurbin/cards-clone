@@ -1,4 +1,4 @@
-export const fetcher = async (enddpoint: string) => {
-  const response = await fetch(enddpoint);
+export const fetcher = async (endpoint: string, options: RequestInit = {}) => {
+  const response = await fetch(endpoint, options);
   return response.json();
 };
