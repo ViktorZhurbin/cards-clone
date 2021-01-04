@@ -7,7 +7,7 @@ import { DeckItem } from '@/components/DeckItem';
 
 export default function Home() {
   const user = useUser();
-  const { getDecks, addDeck, removeDeck } = useDecks();
+  const { getDecks, addDeck, removeDeck, renameDeck } = useDecks();
 
   if (!user.uid && !user.isLoading) {
     return (
@@ -35,14 +35,18 @@ export default function Home() {
           {getDecks.data.map(({ id, name }) => (
             <DeckItem
               key={id}
+              id={id}
               name={name}
-              onDelete={() => removeDeck.mutate(id)}
+              onDelete={removeDeck.mutate}
+              onRename={renameDeck.mutate}
             />
           ))}
         </section>
         <button
           onClick={() =>
-            addDeck.mutate(`Deck-${Math.floor(Math.random() * 100)}`)
+            addDeck.mutate({
+              name: `Deck-${Math.floor(Math.random() * 100)}`,
+            })
           }
         >
           Add

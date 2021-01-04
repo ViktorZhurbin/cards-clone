@@ -30,9 +30,21 @@ export const DecksProvider = ({ children }) => {
     }
   );
   const addDeck = useMutation(
-    (name) =>
-      fetcher(`${path}&name=${name}`, {
+    (body) =>
+      fetcher(path, {
         method: 'POST',
+        body: JSON.stringify(body),
+      }),
+    {
+      onSuccess: (data) => queryClient.setQueryData(DECKS_QUERY_KEY, data),
+    }
+  );
+
+  const renameDeck = useMutation(
+    (body) =>
+      fetcher(path, {
+        method: 'PUT',
+        body: JSON.stringify(body),
       }),
     {
       onSuccess: (data) => queryClient.setQueryData(DECKS_QUERY_KEY, data),
@@ -45,6 +57,7 @@ export const DecksProvider = ({ children }) => {
         getDecks: { isLoading, isError, data, error },
         addDeck,
         removeDeck,
+        renameDeck,
       }}
     >
       {children}
