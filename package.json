@@ -8,8 +8,11 @@
     "start": "next start"
   },
   "dependencies": {
+    "@toast-ui/editor-plugin-code-syntax-highlight": "^1.0.0",
+    "@toast-ui/react-editor": "^2.5.1",
     "firebase": "^8.2.1",
     "firebase-admin": "^9.4.2",
+    "highlight.js": "^10.5.0",
     "js-cookie": "^2.2.1",
     "next": "10.0.4",
     "react": "17.0.1",

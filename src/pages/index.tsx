@@ -52,6 +52,9 @@ export default function Home() {
         >
           Add Deck
         </button>
+        <Link href="/card/add">
+          <button className={styles.addCardBtn}>Add Card</button>
+        </Link>
       </main>
     </div>
   );
