@@ -1,4 +1,5 @@
 import { GenericObject } from '@/typings';
+import { DeckType } from '@/typings/Deck';
 import { fetcher } from '@/utils/api/fetcher';
 import { createContext, useContext } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
@@ -6,14 +7,24 @@ import { useUser } from './User';
 
 export const DecksContext = createContext(undefined);
 
-export const useDecks = () => useContext(DecksContext);
+export const useDecks = (): {
+  decks: {
+    data: DeckType[];
+    isLoading: boolean;
+    isError: boolean;
+    error: unknown;
+  };
+  renameDeck: unknown;
+  addDeck: unknown;
+  removeDeck: unknown;
+} => useContext(DecksContext);
 
 export const DecksProvider = ({ children }) => {
   const DECKS_QUERY_KEY = 'decks';
   const user = useUser();
   const decksPath = user?.uid && `/api/${user.uid}/decks`;
 
-  const { isLoading, isError, data, error } = useQuery(
+  const { isLoading, isError, data, error } = useQuery<DeckType>(
     DECKS_QUERY_KEY,
     () => fetcher(decksPath),
     { enabled: !user.isLoading }
@@ -57,7 +68,7 @@ export const DecksProvider = ({ children }) => {
   return (
     <DecksContext.Provider
       value={{
-        getDecks: { isLoading, isError, data, error },
+        decks: { isLoading, isError, data, error },
         addDeck,
         removeDeck,
         renameDeck,

@@ -7,7 +7,7 @@ import { DeckItem } from '@/components/DeckItem';
 
 export default function Home() {
   const user = useUser();
-  const { getDecks, addDeck, removeDeck, renameDeck } = useDecks();
+  const { decks, addDeck, removeDeck, renameDeck } = useDecks();
 
   if (!user.uid && !user.isLoading) {
     return (
@@ -17,12 +17,12 @@ export default function Home() {
     );
   }
 
-  if (user.isLoading || getDecks.isLoading) {
+  if (user.isLoading || decks.isLoading) {
     return <span>Loading...</span>;
   }
 
-  if (getDecks.isError) {
-    return <span>Error: {getDecks.error.message}</span>;
+  if (decks.isError) {
+    return <span>Error: {decks.error.message}</span>;
   }
 
   return (
@@ -32,7 +32,7 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <section className={styles.decks}>
-          {getDecks.data.map(({ id, name }) => (
+          {decks.data.map(({ id, name }) => (
             <DeckItem
               key={id}
               id={id}

@@ -1,0 +1,28 @@
+.wrapper {
+  display: inline-grid;
+  align-items: stretch;
+  vertical-align: top;
+  position: relative;
+  width: 100%;
+}
+
+.wrapper::after {
+  content: attr(data-value) ' ';
+  visibility: hidden;
+}
+
+.wrapper::after,
+.textarea {
+  padding: 0 4px;
+  grid-area: 2 / 1;
+  width: 100%;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+.textarea {
+  resize: none;
+  overflow: hidden;
+  font: inherit;
+  /* border: none; */
+}
